@@ -1,0 +1,636 @@
+/* Configuración general de la página */
+html {
+    height: 100%;
+    /* Necesario para que body pueda tomar 100vh correctamente */
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    /* Fuente moderna y legible */
+    text-align: center;
+    /* Centra todos los textos y botones */
+    background-color: #f0f2f5;
+    /* Color de fondo gris muy claro */
+    margin: 0;
+    /* Quita márgenes externos */
+    padding: 3px 20px 8px;
+    /* Espacio interno en los bordes */
+    height: 100vh;
+    /* Ocupa exactamente la altura de la pantalla */
+    box-sizing: border-box;
+    /* El padding queda dentro de la altura declarada */
+    display: flex;
+    /* Layout vertical: topbar arriba, layout-principal abajo */
+    flex-direction: column;
+    overflow: hidden;
+    /* Evita scroll en el body: el scroll va dentro de la bandeja */
+}
+
+/* ===================================================================
+   HEADER: barra superior con botón Inicio y menú "Casa Embrujada"
+   =================================================================== */
+.topbar {
+    width: 100%;
+    /* Ocupa todo el ancho de la pantalla */
+    margin: 0 auto 12px auto;
+    /* Centrado, con espacio antes del título */
+    display: flex;
+    /* Ambos elementos alineados a la izquierda */
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    /* Separación entre botón Inicio y el menú */
+    padding: 12px 24px;
+    background-color: #3b1260;
+    /* Morado oscuro sólido */
+    border-radius: 0 0 15px 15px;
+    /* Esquinas redondeadas solo abajo */
+    box-shadow:
+        inset 0 -6px rgba(0, 0, 0, 0.25),
+        /* Sombra interna inferior: da grosor/relieve */
+        inset 0 3px rgba(255, 255, 255, 0.15),
+        /* Brillo interno superior sutil */
+        0 8px 20px rgba(0, 0, 0, 0.35);
+    /* Sombra externa para elevar la barra */
+    box-sizing: border-box;
+}
+
+/* Botón Inicio (arriba a la izquierda) -> lleva a la página principal */
+.btn-inicio {
+    background-color: #2196F3;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 18px;
+    /* Quitamos padding vertical: la altura la controla height */
+    height: 42px;
+    /* Misma altura que .menu-trigger */
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 8px;
+    box-shadow:
+        inset 0 -4px rgba(0, 0, 0, 0.2),
+        inset 0 2px rgba(255, 255, 255, 0.3),
+        4px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-inicio:hover {
+    transform: translateY(-2px);
+}
+
+.btn-inicio:active {
+    transform: translateY(0);
+    box-shadow: inset 0 -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Menú "Casa Embrujada" con su dropdown de misiones */
+.menu-principal {
+    position: relative;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.menu-trigger {
+    background-color: #c6d518;
+    /* Mismo amarillo que las antorchas */
+    color: #2c1b3f;
+    /* Texto oscuro para contraste sobre amarillo */
+    font-family: inherit;
+    font-weight: bold;
+    padding: 0 18px;
+    /* Quitamos padding vertical: la altura la controla height */
+    height: 42px;
+    /* Misma altura que .btn-inicio */
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow:
+        inset 0 -4px rgba(0, 0, 0, 0.2),
+        inset 0 2px rgba(255, 255, 255, 0.3),
+        4px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.menu-trigger:hover,
+.menu-item:focus-within .menu-trigger {
+    transform: translateY(-2px);
+    background-color: #c6d518;
+    /* Mantiene el amarillo al hacer hover */
+    color: #2c1b3f;
+}
+
+.menu-trigger:active {
+    transform: translateY(0);
+    box-shadow: inset 0 -2px rgba(0, 0, 0, 0.2);
+}
+
+.flechita {
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+.menu-item:hover .flechita,
+.menu-item:focus-within .flechita {
+    transform: rotate(180deg);
+}
+
+/* Lista desplegable con las misiones */
+.dropdown-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 220px;
+    background: #3b1260;
+    /* Mismo morado que el topbar */
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    z-index: 20;
+}
+
+/* Se muestra al pasar el mouse o al enfocar con el teclado */
+.menu-item:hover .dropdown-content,
+.menu-item:focus-within .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-link {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 6px;
+    color: #f5f0ff;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: left;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.dropdown-link:hover {
+    background-color: #c6d518;
+    color: #2c1b3f;
+}
+
+/* Misión 3 todavía no disponible: se ve "bloqueada" */
+.dropdown-link-bloqueado {
+    color: #8b819b;
+    cursor: not-allowed;
+}
+
+.dropdown-link-bloqueado:hover {
+    background-color: transparent;
+    color: #8b819b;
+}
+
+/* Ajuste específico para los títulos */
+h2 {
+    margin-top: 0;
+    /* Pegamos el título al borde superior */
+    margin-bottom: 5px;
+    /* Reducimos espacio con el párrafo */
+}
+
+p {
+    margin-top: 0;
+    /* Pegamos el párrafo al título */
+    margin-bottom: 10px;
+    /* Un pequeño espacio antes del workspace */
+}
+
+/* ===================================================================
+   LAYOUT PRINCIPAL: bandeja izquierda + workspace derecha
+   =================================================================== */
+.layout-principal {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    /* Separación entre bandeja y workspace */
+    align-items: stretch;
+    /* Los hijos se estiran para igualar la altura del contenedor */
+    width: 100%;
+    /* Ocupa todo el ancho disponible, sin límite fijo */
+    flex: 1;
+    /* Ocupa todo el espacio vertical restante del body */
+    min-height: 0;
+    /* Necesario para que flex:1 funcione correctamente en columnas */
+    overflow: hidden;
+}
+
+main {
+    flex: 1;
+    /* El workspace ocupa todo el espacio horizontal restante */
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    /* Para que #workspace pueda crecer con flex */
+}
+
+/* ===================================================================
+   WORKSPACE: kanban punteado donde se arma el algoritmo
+   =================================================================== */
+#workspace {
+    width: 100%;
+    /* Se ajusta al espacio que deja la bandeja */
+    flex: 1;
+    /* Ocupa toda la altura disponible del main */
+    min-height: 0;
+    /* Necesario para que flex:1 no desborde */
+    border: 3px dashed #bbb;
+    /* Borde punteado para indicar que es un área de soltar */
+    margin: 0;
+    /* Sin margen auto: el flex-parent ya centra */
+    position: relative;
+    /* Permite que las piezas (y el botón) se posicionen libremente adentro */
+    background: white;
+    /* Fondo blanco para que resalten las piezas */
+    border-radius: 15px;
+    /* Bordes redondeados */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* Sombra suave para dar profundidad */
+    box-sizing: border-box;
+}
+
+/* Mensaje guía mientras el kanban está vacío (desaparece solo al meter una pieza) */
+/* Se activa solo cuando el único hijo es el botón #btnPlay (pieza del workspace) */
+#workspace:not(:has(> *:not(#btnPlay)))::before {
+    content: "🧱 Arrastra aquí tus bloques para construir tu algoritmo 🧱";
+    color: #bbb;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    pointer-events: none;
+}
+
+/* Botón Play dentro del workspace — esquina superior derecha */
+/* Mismo diseño que .btn-inicio */
+#btnPlay {
+    position: absolute;
+    /* Se posiciona dentro del workspace */
+    top: 12px;
+    /* Margen desde arriba */
+    right: 12px;
+    /* Margen desde la derecha */
+    z-index: 10;
+    /* Por encima de las piezas arrastradas */
+    background-color: #4CAF50;
+    /* Mismo verde que las piezas Inicio/Fin */
+    color: white;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow:
+        inset 0 -4px rgba(0, 0, 0, 0.2),
+        inset 0 2px rgba(255, 255, 255, 0.3),
+        4px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+#btnPlay:hover {
+    transform: translateY(-2px);
+}
+
+#btnPlay:active {
+    transform: translateY(0);
+    box-shadow: inset 0 -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo base para todos los bloques/piezas */
+.pieza {
+    width: 200px;
+    /* Ancho de cada bloque */
+    height: 70px;
+    /* Alto de cada bloque */
+    position: relative;
+    /* Posición relativa dentro de la bandeja; al soltarla en #workspace, */
+    /* Interacciones.js puede cambiarla a "absolute" con su X/Y de destino */
+    cursor: grab;
+    /* El cursor cambia a una "manita" para indicar que se arrastra */
+    user-select: none;
+    /* Evita que se seleccione el texto al arrastrar */
+    border-radius: 8px;
+    /* Redondeo de esquinas de la pieza */
+    display: flex;
+    /* Usamos flexbox para centrar el texto interno */
+    align-items: center;
+    /* Centra el texto verticalmente */
+    justify-content: center;
+    /* Centra el texto horizontalmente */
+    font-weight: bold;
+    /* Texto en negrita */
+    color: white;
+    /* Texto Para que la pieza deje ver lo que sobresalga */
+    overflow: visible;
+    /* Asegúrate de que esto siga así */
+    box-shadow:
+        /* Sombra 1 (Interna - Inferior): Simula el relieve interno de la base */
+        inset 0 -4px rgba(0, 0, 0, 0.2),
+        /* Añadimos una sombra interna superior sutil para dar grosor al borde */
+        inset 0 2px rgba(255, 255, 255, 0.3),
+        /* Sombra 2 (Externa - Inferior Derecha): Da volumen y "separa" la pieza del fondo */
+        4px 4px 6px rgba(0, 0, 0, 0.3);
+    /* 3. Transición suave para cuando se haga clic */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.pieza:active {
+    cursor: grabbing;
+}
+
+/* Cambia el cursor a puño cerrado al hacer clic */
+
+.inputEstilos {
+    width: 80px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: 6px;
+}
+
+.SelectEstilos {
+    width: 100px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: 6px;
+    margin-right: 20px;
+    font-family: inherit;
+    color: #333;
+}
+
+/* Colores específicos según el tipo de bloque */
+.verde {
+    background-color: #4CAF50;
+}
+
+/* Color azul para bloque mostrar secreto*/
+.piezaMostrarSecreto {
+    background-color: #2196F3;
+}
+
+/* Color rojo para el bloque de activar craneo*/
+.piezaActivarCraneo {
+    background-color: #F44336;
+}
+
+/* Color naranja para el bloque de tiempo */
+.piezaTiempo {
+    background-color: #FF9800;
+}
+
+/* Color morado para el bloque de repetir */
+.piezaRepetir {
+    background-color: #9C27B0;
+}
+
+/* Color amarillo para el bloque de antorcha */
+.pieza.piezaLarga.piezaAntorcha {
+    background-color: #c6d518;
+}
+
+/* Color café para el bloque de la ventana */
+.pieza.piezaLarga.piezaVentana {
+    background-color: #8D5524;
+}
+
+
+/* Pieza mas larga a la regular*/
+.piezaLarga {
+    width: 240px;
+    /* largo cada bloque */
+}
+
+/* Contenedor de cuadritos superiores */
+.cuadritos {
+    position: absolute;
+    /* Posicionamiento absoluto para colocar los cuadritos en la parte superior del workspace */
+    top: -15px;
+    /* Lo sube para que los cuadritos se asomen */
+    left: 0;
+    /* Pegamos el contenedor al borde izquierdo del workspace */
+    width: 100%;
+    /* Mide lo mismo que la pieza para poder centrar los hijos */
+    display: flex;
+    /* Pone los hijos en fila */
+    justify-content: center;
+    /* Centra el grupo de cuadritos horizontalmente */
+    gap: 40px;
+    /*Espacio de separación ENTRE los dos cuadritos */
+    pointer-events: none;
+    /* Evita que el mouse detecte el contenedor al arrastrar */
+    z-index: 1;
+    /*Para que parezca que el cuadrito entra por debajo de la pieza, no por encima */
+}
+
+/* Aquí defino el tamaño de los cuadritos */
+.cuadritoMostrarSecreto,
+.cuadritoActivarCraneo,
+.cuadritoInicioFin,
+.cuadritoTiempo,
+.cuadritoRepetir,
+.cuadritoAntorcha,
+.cuadritoVentana {
+    width: 40px;
+    /* Ancho de cada cuadrito */
+    height: 20px;
+    /* Alto de cada cuadrito */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    box-shadow:
+        inset 0 2px rgba(255, 255, 255, 0.4),
+        /* Brillo superior */
+        0 2px 2px rgba(0, 0, 0, 0.2);
+    /* Sombra proyectada sobre la pieza padre */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Un borde muy fino para dar definición */
+}
+
+/* Colores específicos para cada tipo de cuadrito */
+.cuadritoMostrarSecreto {
+    background-color: #2196F3;
+}
+
+/* Color rojo para los cuadritos del bloque de mostrar secreto */
+.cuadritoActivarCraneo {
+    background-color: #F44336;
+}
+
+/* Color verde para los cuadritos del bloque de activar cráneo */
+.cuadritoInicioFin {
+    background-color: #4CAF50;
+}
+
+/* Color naranja para los cuadritos de Inicio y Fin */
+.cuadritoTiempo {
+    background-color: #FF9800;
+}
+
+/* Color morado para los cuadritos del bloque de tiempo */
+.cuadritoRepetir {
+    background-color: #9C27B0;
+}
+
+/* Color amarillo para los cuadritos del bloque de repetir */
+.cuadritoAntorcha {
+    background-color: #c6d518;
+}
+
+/* Color café para los cuadritos del bloque de las antorchas */
+.cuadritoVentana {
+    background-color: #795548;
+}
+
+
+.alinearMensajeYBoton {
+    display: flex;
+    /* Activa el modo flexible */
+    justify-content: center;
+    /* Centra el contenido horizontalmente */
+    align-items: center;
+    /* Centra el contenido verticalmente entre ellos */
+    gap: 20px;
+    /* Espacio de separación entre el botón y el texto */
+    padding-top: 10px;
+    /* <--- ESTO empuja el bloque hacia abajo desde ADENTRO */
+    width: 100%;
+    /* Asegura que el contenedor ocupe todo el ancho disponible */
+    clear: both;
+    /* Evita que elementos flotantes se peguen */
+}
+
+/*===== ESTILO GENERAL DE LOS BOTONES =====*/
+button {
+    padding: 12px 24px;
+    /* Tamaño del botón */
+    font-size: 16px;
+    /* Tamaño de la   fuente */
+    line-height: 1;
+    /* Evita que el texto se desborde verticalmente */
+    border: none;
+    /* Sin borde */
+    border-radius: 8px;
+    /* Redondeado de las esquinas */
+    cursor: pointer;
+    /*Cursor de manita apuntando*/
+    margin: 0 !important;
+    /* !important asegura que no gane otro margen de antes */
+    display: flex;
+    /*Ayuda a que se alinee mejor con el texto */
+    align-items: center;
+    /* Centra el texto dentro del botón */
+}
+
+
+/* Estilo para el texto de éxito o error */
+#mensaje {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+    /* Mismo que el botón para evitar que el texto se desborde verticalmente */
+    margin: 0 !important;
+    /* !important para quitar cualquier margen fantasma */
+    display: flex;
+    /* Usamos flexbox para centrar el texto dentro del contenedor */
+    align-items: center;
+    /* Alineación vertical perfecta */
+    height: 40px;
+    /* Altura fija controlada */
+    min-width: 300px;
+    /* Ancho mínimo para que el mensaje no se vea apretado */
+    text-align: left;
+    /* Alinea el texto a la izquierda dentro del bloque, pero el bloque sigue centrado */
+    padding-top: 2px;
+    /* Pequeña separación entre el borde superior del mensaje y el texto */
+}
+
+/* ===================================================================
+   SIDEBAR IZQUIERDO: BLOQUES (PALETA DE PIEZAS)
+   =================================================================== */
+#bandejaBloques {
+    width: 280px;
+    /* Ancho fijo del sidebar de bloques */
+    flex-shrink: 0;
+    /* No se encoge aunque el workspace lo presione */
+    height: auto;
+    /* Se estira con align-items: stretch del layout-principal */
+    align-self: stretch;
+    overflow: hidden;
+    /* Clipea la scrollbar dentro del border-radius */
+    margin: 0;
+    background: white;
+    border: 3px groove #3b1260;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 0;
+    /* El padding va al .bandeja-scroll interno */
+}
+
+/* Contenedor interno que maneja el scroll sin romper las esquinas */
+.bandeja-scroll {
+    height: 100%;
+    overflow-y: auto;
+    /* Scroll aquí, dentro del clip del aside */
+    padding: 12px 15px 15px 15px;
+    box-sizing: border-box;
+}
+
+.tituloBandeja {
+    margin: 0 0 15px 0;
+    font-weight: bold;
+    color: #555;
+    text-align: left;
+}
+
+.contenedorBloques {
+    display: flex;
+    flex-direction: column;
+    /* Piezas apiladas en columna (sidebar vertical) */
+    align-items: center;
+    /* Centradas horizontalmente en la bandeja */
+    padding-top: 20px;
+    /* Espacio para que los cuadritos superiores no se corten */
+    gap: 28px;
+    /* Separación entre piezas */
+}
+
+/* ===================================================================
+   RESPONSIVE: ajustes ligeros para pantallas angostas
+   =================================================================== */
+@media (max-width: 600px) {
+    .topbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .dropdown-content {
+        left: 0;
+        right: auto;
+    }
+}

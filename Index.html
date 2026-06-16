@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>🧙 Haunted Mansion</title>
+    <link rel="stylesheet" href="Estilos.css">
+</head>
+
+<body>
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="topbar">
+        <!-- Botón Inicio: cámbiale el href a la URL de tu página principal -->
+        <a href="#" class="btn-inicio" title="Volver a la página principal">Inicio 🏠</a>
+
+        <nav class="menu-principal">
+            <div class="menu-item">
+                <button class="menu-trigger" aria-haspopup="true" aria-expanded="false">
+                    Casa Embrujada 👻 <span class="flechita">▾</span>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-link" onclick="return false;">Misión 1: Antorchas 🔥</a>
+                    <a href="#" class="dropdown-link" onclick="return false;">Misión 2: Ventanas 田</a>
+                    <a href="#" class="dropdown-link dropdown-link-bloqueado" onclick="return false;">Misión 3:
+                        Próximamente 🔒</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===================== LAYOUT PRINCIPAL: bandeja izquierda + workspace derecha ===================== -->
+    <div class="layout-principal">
+
+        <!-- IZQUIERDA: Bandeja de bloques -->
+        <aside id="bandejaBloques">
+            <div class="bandeja-scroll">
+                <p class="tituloBandeja">Bloques 🧩</p>
+
+                <div class="contenedorBloques">
+
+                    <div class="pieza verde" id="piezaInicio">
+                        <div class="cuadritos">
+                            <div class="cuadritoInicioFin"></div>
+                            <div class="cuadritoInicioFin"></div>
+                        </div>
+                        Inicio
+                    </div>
+
+                    <div class="pieza piezaActivarCraneo" id="piezaActivarCraneo">
+                        <div class="cuadritos">
+                            <div class="cuadritoActivarCraneo"></div>
+                            <div class="cuadritoActivarCraneo"></div>
+                        </div>
+                        Activar cráneo 💀
+                    </div>
+
+                    <div class="pieza piezaMostrarSecreto" id="piezaMostrarSecreto">
+                        <div class="cuadritos">
+                            <div class="cuadritoMostrarSecreto"></div>
+                            <div class="cuadritoMostrarSecreto"></div>
+                        </div>
+                        Mostrar secreto 😱
+                    </div>
+
+                    <div class="pieza verde" id="piezaFin">
+                        <div class="cuadritos">
+                            <div class="cuadritoInicioFin"></div>
+                            <div class="cuadritoInicioFin"></div>
+                        </div>
+                        Fin
+                    </div>
+
+                    <div class="pieza piezaTiempo" id="piezaTiempo1">
+                        <div class="cuadritos">
+                            <div class="cuadritoTiempo"></div>
+                            <div class="cuadritoTiempo"></div>
+                        </div>
+                        Tiempo ⏳
+                        <input type="number" id="inputTiempo1" placeholder="Segundos1" class="inputEstilos" min="1"
+                            max="60" onkeydown="return false;">
+                    </div> <!-- onkeydown="return false" evita que el usuario escriba manualmente -->
+
+                    <div class="pieza piezaTiempo" id="piezaTiempo2">
+                        <div class="cuadritos">
+                            <div class="cuadritoTiempo"></div>
+                            <div class="cuadritoTiempo"></div>
+                        </div>
+                        Tiempo ⏳
+                        <input type="number" id="inputTiempo2" placeholder="Segundos" class="inputEstilos" min="1"
+                            max="60" onkeydown="return false;">
+                    </div>
+
+                    <div class="pieza piezaRepetir" id="piezaRepetir">
+                        <div class="cuadritos">
+                            <div class="cuadritoRepetir"></div>
+                            <div class="cuadritoRepetir"></div>
+                        </div>
+                        Repetir 🔁
+                        <input type="number" id="inputRepetir" placeholder="No.veces" class="inputEstilos" min="1"
+                            max="10" onkeydown="return false;">
+                    </div>
+
+                    <div class="pieza piezaLarga piezaAntorcha" id="piezaAntorcha1">
+                        <div class="cuadritos">
+                            <div class="cuadritoAntorcha"></div>
+                            <div class="cuadritoAntorcha"></div>
+                        </div>
+                        Encender antorchas 🔥
+                        <select id="selectAntorcha1" class="SelectEstilos">
+                            <option value="" selected disabled>Selecciona</option>
+                            <option value="derecha">derechas</option>
+                            <option value="izquierda">izquierdas</option>
+                        </select>
+                    </div>
+
+                    <div class="pieza piezaLarga piezaAntorcha" id="piezaAntorcha2">
+                        <div class="cuadritos">
+                            <div class="cuadritoAntorcha"></div>
+                            <div class="cuadritoAntorcha"></div>
+                        </div>
+                        Encender antorchas 🔥
+                        <select id="selectAntorcha2" class="SelectEstilos">
+                            <option value="" selected disabled>Selecciona</option>
+                            <option value="derecha">derechas</option>
+                            <option value="izquierda">izquierdas</option>
+                        </select>
+                    </div>
+
+                    <div class="pieza piezaLarga piezaVentana" id="piezaVentana">
+                        <div class="cuadritos">
+                            <div class="cuadritoVentana"></div>
+                            <div class="cuadritoVentana"></div>
+                        </div>
+                        Seleccionar ventana 田
+                        <select id="selectVentana" class="SelectEstilos">
+                            <option value="" selected disabled>Selecciona</option>
+                            <option value="derecha">derecha</option>
+                            <option value="izquierda">izquierda</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div><!-- fin .bandeja-scroll -->
+        </aside>
+
+        <!-- DERECHA: Workspace kanban -->
+        <main>
+            <div id="workspace">
+                <button id="btnPlay" onclick="verificarEstado()">Construir ⚙️</button>
+            </div>
+        </main>
+
+    </div><!-- fin .layout-principal -->
+
+    <script src="Interacciones.js"></script>
+</body>
+
+</html>
