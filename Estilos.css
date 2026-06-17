@@ -294,7 +294,7 @@ main {
     /* Margen desde la derecha */
     z-index: 10;
     /* Por encima de las piezas arrastradas */
-    background-color: #4CAF50;
+    background-color: #58b840;
     /* Mismo verde que las piezas Inicio/Fin */
     color: white;
     font-weight: bold;
@@ -384,56 +384,65 @@ main {
     color: #333;
 }
 
-/* Colores específicos según el tipo de bloque */
-.verde {
+/* ===== COLORES:pieza y cuadrito===== */
+
+/* Verde — Inicio / Fin */
+.verde,
+.cuadritoInicioFin {
     background-color: #4CAF50;
 }
 
-/* Color azul para bloque mostrar secreto*/
-.piezaMostrarSecreto {
+/* Azul — Mostrar secreto */
+.piezaMostrarSecreto,
+.cuadritoMostrarSecreto {
     background-color: #2196F3;
 }
 
-/* Color rojo para el bloque de activar craneo*/
-.piezaActivarCraneo {
+/* Rojo — Activar cráneo */
+.piezaActivarCraneo,
+.cuadritoActivarCraneo {
     background-color: #F44336;
 }
 
-/* Color naranja para el bloque de tiempo */
-.piezaTiempo {
+/* Naranja — Tiempo */
+.piezaTiempo,
+.cuadritoTiempo {
     background-color: #FF9800;
 }
 
-/* Color morado para el bloque de repetir */
-.piezaRepetir {
+/* Morado — Repetir */
+.piezaRepetir,
+.cuadritoRepetir {
     background-color: #9C27B0;
 }
 
-/* Color amarillo para el bloque de antorcha */
-.pieza.piezaLarga.piezaAntorcha {
+/* Amarillo — Antorcha */
+.pieza.piezaLarga.piezaAntorcha,
+.cuadritoAntorcha {
     background-color: #c6d518;
 }
 
-/* Color café para el bloque de la ventana */
-.pieza.piezaLarga.piezaVentana {
+/* Café — Ventana */
+.pieza.piezaLarga.piezaVentana,
+.cuadritoVentana {
     background-color: #8D5524;
 }
 
 
-/* Pieza mas larga a la regular*/
+/* Pieza más larga que la regular */
 .piezaLarga {
     width: 240px;
-    /* largo cada bloque */
+    /* Largo de cada bloque tipo "largo" */
 }
 
 /* Contenedor de cuadritos superiores */
 .cuadritos {
     position: absolute;
-    /* Posicionamiento absoluto para colocar los cuadritos en la parte superior del workspace */
+    /* Posicionamiento absoluto para colocar los cuadritos en la parte superior de la pieza */
     top: -15px;
-    /* Lo sube para que los cuadritos se asomen */
+    /* Lo sube para que los cuadritos se asomen por arriba */
     left: 0;
-    /* Pegamos el contenedor al borde izquierdo del workspace */
+    /* Pegamos el contenedor al borde izquierdo de la pieza */
     width: 100%;
     /* Mide lo mismo que la pieza para poder centrar los hijos */
     display: flex;
@@ -441,14 +450,14 @@ main {
     justify-content: center;
     /* Centra el grupo de cuadritos horizontalmente */
     gap: 40px;
-    /*Espacio de separación ENTRE los dos cuadritos */
+    /* Espacio de separación ENTRE los dos cuadritos */
     pointer-events: none;
     /* Evita que el mouse detecte el contenedor al arrastrar */
     z-index: 1;
-    /*Para que parezca que el cuadrito entra por debajo de la pieza, no por encima */
+    /* Para que parezca que el cuadrito entra por debajo de la pieza, no por encima */
 }
 
-/* Aquí defino el tamaño de los cuadritos */
+/* Tamaño y forma compartidos por todos los cuadritos */
 .cuadritoMostrarSecreto,
 .cuadritoActivarCraneo,
 .cuadritoInicioFin,
@@ -468,44 +477,8 @@ main {
         0 2px 2px rgba(0, 0, 0, 0.2);
     /* Sombra proyectada sobre la pieza padre */
     border: 1px solid rgba(0, 0, 0, 0.1);
-    /* Un borde muy fino para dar definición */
+    /* Borde muy fino para dar definición */
 }
-
-/* Colores específicos para cada tipo de cuadrito */
-.cuadritoMostrarSecreto {
-    background-color: #2196F3;
-}
-
-/* Color rojo para los cuadritos del bloque de mostrar secreto */
-.cuadritoActivarCraneo {
-    background-color: #F44336;
-}
-
-/* Color verde para los cuadritos del bloque de activar cráneo */
-.cuadritoInicioFin {
-    background-color: #4CAF50;
-}
-
-/* Color naranja para los cuadritos de Inicio y Fin */
-.cuadritoTiempo {
-    background-color: #FF9800;
-}
-
-/* Color morado para los cuadritos del bloque de tiempo */
-.cuadritoRepetir {
-    background-color: #9C27B0;
-}
-
-/* Color amarillo para los cuadritos del bloque de repetir */
-.cuadritoAntorcha {
-    background-color: #c6d518;
-}
-
-/* Color café para los cuadritos del bloque de las antorchas */
-.cuadritoVentana {
-    background-color: #795548;
-}
-
 
 .alinearMensajeYBoton {
     display: flex;
