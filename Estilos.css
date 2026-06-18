@@ -284,7 +284,6 @@ main {
 }
 
 /* Botón Play dentro del workspace — esquina superior derecha */
-/* Mismo diseño que .btn-inicio */
 #btnPlay {
     position: absolute;
     /* Se posiciona dentro del workspace */
@@ -295,7 +294,7 @@ main {
     z-index: 10;
     /* Por encima de las piezas arrastradas */
     background-color: #58b840;
-    /* Mismo verde que las piezas Inicio/Fin */
+    /* Color verde*/
     color: white;
     font-weight: bold;
     font-family: inherit;
@@ -480,66 +479,16 @@ main {
     /* Borde muy fino para dar definición */
 }
 
-.alinearMensajeYBoton {
-    display: flex;
-    /* Activa el modo flexible */
-    justify-content: center;
-    /* Centra el contenido horizontalmente */
-    align-items: center;
-    /* Centra el contenido verticalmente entre ellos */
-    gap: 20px;
-    /* Espacio de separación entre el botón y el texto */
-    padding-top: 10px;
-    /* <--- ESTO empuja el bloque hacia abajo desde ADENTRO */
-    width: 100%;
-    /* Asegura que el contenedor ocupe todo el ancho disponible */
-    clear: both;
-    /* Evita que elementos flotantes se peguen */
-}
-
-/*===== ESTILO GENERAL DE LOS BOTONES =====*/
+/*===== RESET DE BOTONES: solo lo que el navegador no aplica por defecto =====*/
 button {
-    padding: 12px 24px;
-    /* Tamaño del botón */
-    font-size: 16px;
-    /* Tamaño de la   fuente */
-    line-height: 1;
-    /* Evita que el texto se desborde verticalmente */
     border: none;
-    /* Sin borde */
-    border-radius: 8px;
-    /* Redondeado de las esquinas */
+    /* Quita el borde 3D que el navegador pone en <button> */
     cursor: pointer;
-    /*Cursor de manita apuntando*/
-    margin: 0 !important;
-    /* !important asegura que no gane otro margen de antes */
-    display: flex;
-    /*Ayuda a que se alinee mejor con el texto */
-    align-items: center;
-    /* Centra el texto dentro del botón */
-}
-
-
-/* Estilo para el texto de éxito o error */
-#mensaje {
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 1;
-    /* Mismo que el botón para evitar que el texto se desborde verticalmente */
-    margin: 0 !important;
-    /* !important para quitar cualquier margen fantasma */
-    display: flex;
-    /* Usamos flexbox para centrar el texto dentro del contenedor */
-    align-items: center;
-    /* Alineación vertical perfecta */
-    height: 40px;
-    /* Altura fija controlada */
-    min-width: 300px;
-    /* Ancho mínimo para que el mensaje no se vea apretado */
-    text-align: left;
-    /* Alinea el texto a la izquierda dentro del bloque, pero el bloque sigue centrado */
-    padding-top: 2px;
-    /* Pequeña separación entre el borde superior del mensaje y el texto */
+    /* Manita en todos los botones */
+    margin: 0;
+    /* Quita los márgenes por defecto del navegador */
+    font-size: 16px;
+    /*tamano de la fuente*/
 }
 
 /* ===================================================================
@@ -606,4 +555,132 @@ button {
         left: 0;
         right: auto;
     }
+}
+
+/* ===================================================================
+   MODAL: ventana emergente de resultado
+   =================================================================== */
+
+/* Fondo oscuro semitransparente que cubre toda la pantalla */
+.modal-overlay {
+    position: fixed;
+    /* Fijo: no se mueve al hacer scroll */
+    inset: 0;
+    /* Cubre todo: top/right/bottom/left = 0 */
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    /* Por encima de todo */
+    transition: opacity 0.25s ease;
+}
+
+/* Estado oculto */
+.modal-oculto {
+    opacity: 0;
+    pointer-events: none;
+    /* No recibe clics cuando está invisible */
+}
+
+/* Estado visible */
+.modal-visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Caja central del modal */
+.modal-caja {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    width: 420px;
+    max-width: 90vw;
+    overflow: hidden;
+    /* El encabezado coloreado respeta el border-radius */
+    transform: scale(0.85);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Rebote al aparecer */
+}
+
+/* Cuando el overlay es visible, la caja escala a tamaño normal */
+.modal-visible .modal-caja {
+    transform: scale(1);
+}
+
+/* Encabezado: cambia de color según el resultado */
+.modal-encabezado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 10px 10px;
+    gap: 3px;
+}
+
+/* Verde para éxito */
+.modal-exito {
+    background: linear-gradient(135deg, #2e7d32, #4CAF50);
+    color: white;
+}
+
+/* Rojo para error */
+.modal-error {
+    background: linear-gradient(135deg, #b71c1c, #F44336);
+    color: white;
+}
+
+/* Icono grande (emoji) */
+.modal-icono {
+    font-size: 30px;
+    line-height: 1;
+}
+
+/* Título del modal */
+.modal-titulo {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+}
+
+/* Cuerpo: área del mensaje */
+.modal-cuerpo {
+    padding: 24px 28px 12px;
+}
+
+.modal-mensaje {
+    margin: 0;
+    font-size: 16px;
+    color: #444;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Pie: botón de cierre */
+.modal-pie {
+    padding: 16px 28px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+#modalBtnCerrar {
+    padding: 10px 36px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #3b1260;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#modalBtnCerrar:hover {
+    background: #5a1d96;
+    transform: translateY(-2px);
+}
+
+#modalBtnCerrar:active {
+    transform: translateY(0);
 }
