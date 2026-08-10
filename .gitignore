@@ -1,0 +1,81 @@
+# ═══════════════════════════════════════════════════════════════
+#  MiniProgramadorFE — repositorio LIMPIO (público)
+#
+#  Aquí solo vive lo que hace falta para que la app funcione:
+#     Index.php · Interacciones.js · Estilos.css
+#     misiones/ · Imagenes/ · esp32/
+#
+#  Todo lo demás (IA, documentación, notas) vive en el repo completo.
+#  Regla de oro: antes de cada commit, mira `git status`.
+# ═══════════════════════════════════════════════════════════════
+
+# ─── Herramientas de IA ───────────────────────────────────────
+# Nada de esto es parte del proyecto: son instrucciones para agentes.
+.claude/
+.agent/
+.gemini/
+.cursor/
+.windsurf/
+.aider*
+CLAUDE.md
+GEMINI.md
+AGENTS.md
+memory/
+
+# ─── Documentación y material de estudio ──────────────────────
+# Válido y útil, pero no es la app. Vive en el repo completo.
+GuiaAprendizaje.html
+explicacion_html.md
+implementation_plan.md
+*.plan.md
+NOTAS*.md
+TODO.md
+
+# ─── Recursos que no son del proyecto ─────────────────────────
+# Imagenes/ guarda los PNG que usa la interfaz. Los PDF de consulta
+# (fichas técnicas, referencias) no hacen falta para que corra.
+# Si algún PDF SÍ es necesario, borra esta línea.
+Imagenes/*.pdf
+
+# ─── Credenciales — NUNCA en un repositorio público ───────────
+# Git tiene memoria permanente: lo que subes una vez queda en el
+# historial aunque después lo borres.
+.env
+.env.*
+*.key
+*.pem
+*.p12
+credenciales*
+secretos*
+secrets*
+config.local.*
+wifi_config.py
+
+# ─── Basura de Windows ────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ─── Editores ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*~
+
+# ─── Logs y temporales ────────────────────────────────────────
+*.log
+*.tmp
+*.bak
+*.old
+tmp/
+
+# ─── Node (por si algún día entra) ────────────────────────────
+node_modules/
+package-lock.json
+
+# ─── Python / MicroPython compilado ───────────────────────────
+# Los .py del ESP32 SÍ entran; lo compilado no.
+__pycache__/
+*.pyc
+*.mpy

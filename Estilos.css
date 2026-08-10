@@ -1,3 +1,17 @@
+/* ===================================================================
+   TOKENS DE TIEMPO — paleta única de movimiento de toda la app
+   (los valores repetidos por el resto del archivo coinciden con estos)
+   =================================================================== */
+:root {
+    --t-tap: 0.1s;      /* Press de botones */
+    --t-rapido: 0.2s;   /* Hovers, reacciones del bote, levantar piezas */
+    --t-suave: 0.25s;   /* Apariciones con rebote: modal, glows, pulsos */
+    --t-crecer: 0.3s;   /* Crecimiento del Repetir — sincronizado a mano con
+                           desplazarPieza() en Interacciones.js (0.3s + timeout 320ms):
+                           si cambias este token, cambia también ese JS */
+    --rebote: cubic-bezier(0.34, 1.56, 0.64, 1); /* El spring de la casa */
+}
+
 /* Configuración general de la página */
 html {
     height: 100%;
@@ -77,7 +91,7 @@ body {
 }
 
 .btn-inicio:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px); /*Para*/
 }
 
 .btn-inicio:active {
@@ -358,8 +372,16 @@ main {
         inset 0 2px rgba(255, 255, 255, 0.3),
         /* Sombra 2 (Externa - Inferior Derecha): Da volumen y "separa" la pieza del fondo */
         4px 4px 6px rgba(0, 0, 0, 0.3);
-    /* 3. Transición suave para cuando se haga clic */
-    transition: transform 0.1s, box-shadow 0.1s;
+    /* 3. Transiciones de la pieza. IMPORTANTE: transform y opacity se escriben
+       INLINE durante el arrastre (verificarBoteBasura); las microanimaciones
+       usan las propiedades independientes scale/rotate/translate/filter, que
+       se COMPONEN con ese transform inline sin pisarse. NO añadir opacity aquí
+       (le metería lag de goma al desvanecimiento continuo cerca del bote) */
+    transition: transform var(--t-tap), box-shadow var(--t-tap),
+                scale var(--t-rapido) var(--rebote),
+                rotate var(--t-rapido) var(--rebote),
+                translate var(--t-rapido) var(--rebote),
+                filter var(--t-rapido) ease;
 }
 
 .pieza:active {
@@ -411,11 +433,93 @@ main {
     background-color: #FF9800;
 }
 
-/* Morado — Repetir */
-.piezaRepetir,
+/* Morado — Repetir (Contenedor general) */
+/* La forma C se dibuja con 3 capas de background (generadas por JS):
+   1. Tapa superior fija (78px): barra superior + esquina interna cóncava
+   2. Tapa inferior fija (48px): esquina interna cóncava + barra inferior
+   3. Muro izquierdo: franja lisa estirable entre ambas tapas (con 8px de
+      solape sobre cada tapa para que no se vea costura al redondear píxeles)
+   Así al animar la altura solo se estira el muro y la C nunca se deforma */
+.piezaRepetir {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    width: 240px;
+    height: 190px; /* Default — JS lo actualiza dinámicamente */
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.3));
+    background-repeat: no-repeat;
+    background-position: left top, left bottom, 0 70px;
+    background-size: 100% 78px, 100% 48px, 40px calc(100% - 110px);
+    /* Este shorthand PISA la lista de transiciones de .pieza: toda propiedad
+       animable nueva de las piezas debe añadirse también aquí o la C no la
+       animará. filter var(--t-suave) = glow que enciende Y apaga con fundido */
+    transition: height var(--t-crecer) ease, width var(--t-crecer) ease,
+                scale var(--t-rapido) var(--rebote),
+                filter var(--t-suave) var(--rebote);
+}
+
+/* Durante el estiramiento en vivo (la C sigue a la pieza arrastrada) SOLO
+   height/width se vuelven instantáneos: el movimiento de la mano es la
+   animación. El filter (glow) y el scale SIGUEN animándose — si esto se
+   "simplifica" de vuelta a `transition: none`, el fundido del glow muere
+   en silencio justo durante el arrastre, cuando más se ve */
+.repetir-sin-transicion {
+    transition: height 0s linear, width 0s linear,
+                scale var(--t-rapido) var(--rebote),
+                filter var(--t-suave) var(--rebote) !important;
+}
+
 .cuadritoRepetir {
     background-color: #9C27B0;
 }
+
+/* Parte superior — layout para texto/inputs */
+.repetir-top {
+    background-color: transparent;
+    width: 100%;
+    height: 70px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: none;
+    z-index: 2;
+}
+
+/* Zona de drop interna para piezas hijas */
+/* El width se asigna inline por JS dinámicamente */
+.repetir-body {
+    position: absolute;
+    top: 70px;
+    left: 40px;
+    min-height: 80px;
+    z-index: 1;
+}
+
+/* Piezas dentro del Repetir: apiladas verticalmente sin posición absoluta */
+/* Las piezas conservan su ancho natural (200px regulares, 240px largas) */
+.repetir-body > .pieza {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+/* Efecto glow morado al arrastrar una pieza sobre el gap del Repetir */
+.repetir-highlight {
+    filter: drop-shadow(0 0 14px rgba(156, 39, 176, 0.85))
+            drop-shadow(0 0 6px rgba(156, 39, 176, 0.5))
+            drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.3)) !important;
+    transition: filter 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
 
 /* Amarillo — Antorcha */
 .pieza.piezaLarga.piezaAntorcha,
@@ -704,10 +808,127 @@ button {
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4));
     /*para que se vea como si estuviera flotando o levitando*/
-    transition: transform 0.2s ease;
-    /*para que tenga una transicion suave*/
+    transition: transform var(--t-rapido) ease, scale var(--t-rapido) ease,
+                rotate var(--t-rapido) ease, filter var(--t-rapido) ease;
+    /*para que tenga una transicion suave (incluye las reacciones al arrastre)*/
 }
 
 #boteBasura:hover {
     transform: scale(1.1);
+}
+
+/* ===================================================================
+   MICROANIMACIONES (paquete 2026-08-04)
+
+   Índice del paquete — cada efecto, cuándo se dispara y desde dónde:
+   1. Levantar al agarrar (.pieza-en-vuelo): la pieza "despega" al confirmar
+      el arrastre. JS: iniciarArrastre / extraerDeRepetir / crearClonDesdeBandeja;
+      se quita en terminarArrastre y al tragarla el bote.
+   2. Brote del clon (.pieza-brotando): el clon nace a escala 0.85 y crece.
+      JS: crearClonDesdeBandeja (patrón estado-inicial + reflow forzado).
+   3. Pulso de acople (.pieza-pulso): confirmación al quedar acoplada o dentro
+      del Repetir. JS: pulsoAcople() desde terminarArrastre (160ms).
+   4. Destello del Repetir (.repetir-pulso): la C brilla 250ms al tragarse una
+      pieza. JS: intentarSoltarEnRepetir.
+   5. Bote atento / devorador / tragando: el bote avisa ANTES de borrar con el
+      MISMO criterio que el borrado real (centro ± mitad del bote). JS:
+      verificarBoteBasura; limpieza en terminarArrastre.
+   6. Tragarse la pieza (.pieza-eliminandose): eliminación animada con remove()
+      diferido 200ms y guardas en los imanes para que nadie se acople a una
+      pieza "moribunda". JS: verificarBoteBasura (rama eliminar).
+   7. Asomarse en bandeja (:hover): invita a agarrar. Solo bandeja: las piezas
+      del workspace usan el canal transform inline y el hover se vería
+      inconsistente.
+   8. Foco encantado (inputs): glow morado de la casa al enfocar un campo.
+
+   Reglas del paquete (ver skill `repetir` y advertencias del panel):
+   - transform/opacity INLINE pertenecen al arrastre (verificarBoteBasura):
+     las clases usan SOLO scale/rotate/translate/filter (se componen).
+   - El glow y las reacciones del bote se activan por clase desde JS: con
+     setPointerCapture los :hover ajenos NO se disparan durante el arrastre.
+   - Nada de @keyframes: todo son transiciones + cambios de clase.
+   =================================================================== */
+
+/* 1. La pieza agarrada "despega": crece, se ladea y su sombra se aleja del
+   suelo. scale/rotate son propiedades independientes: no pisan el transform
+   inline del efecto del bote. El centro no cambia → los imanes no se alteran */
+.pieza-en-vuelo {
+    scale: 1.05;
+    rotate: -1.5deg;
+    filter: drop-shadow(4px 10px 12px rgba(0, 0, 0, 0.35));
+    z-index: 60;
+    cursor: grabbing;
+}
+
+/* 2. Estado inicial del clon recién nacido (se quita en el mismo tick tras
+   forzar reflow: la transición de scale de .pieza hace el resto) */
+.pieza-brotando {
+    scale: 0.85;
+    transition: none;
+}
+
+/* 3. Pulso breve de confirmación de acople (JS lo quita a los 160ms y el
+   rebote de la transición base lo regresa a 1) */
+.pieza-pulso {
+    scale: 1.07;
+}
+
+/* 4. Destello morado de la C al tragarse una pieza. Declarado DESPUÉS de
+   .repetir-highlight: ambos usan filter !important y gana el último */
+.repetir-pulso {
+    filter: brightness(0.5)
+            drop-shadow(0 0 18px rgba(156, 39, 176, 1))
+            drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* 5. El bote reacciona a la pieza arrastrada (clases desde JS, no :hover).
+   Declaradas DESPUÉS de #boteBasura:hover para ganar en cascada.
+   atento = pieza cerca ("tengo hambre") · devorador = soltar aquí BORRA */
+#boteBasura.bote-atento {
+    scale: 1.12;
+    rotate: -6deg;
+    filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4)) brightness(1.08);
+}
+
+#boteBasura.bote-devorador {
+    scale: 1.22;
+    rotate: -6deg;
+    filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4))
+            drop-shadow(0 0 16px rgba(244, 67, 54, 0.85));
+}
+
+/* "Glup" al tragar (JS la quita a los 150ms) */
+#boteBasura.bote-tragando {
+    scale: 0.9;
+    rotate: 0deg;
+}
+
+/* 6. Pieza siendo devorada: termina de implosionar y nadie puede agarrarla
+   ni acoplarse a ella mientras muere (además hay guardas en los imanes de JS
+   porque sigue 200ms en el DOM) */
+.pieza-eliminandose {
+    pointer-events: none;
+    transition: transform 0.15s ease-in, opacity 0.15s ease-in !important;
+}
+
+/* 7. Las piezas de la bandeja se asoman al pasar el mouse (mismo gesto de
+   levantarse que los botones). SOLO bandeja: translate es propiedad
+   independiente y las originales nunca reciben estilos inline de arrastre */
+.contenedorBloques .pieza:hover {
+    translate: 0 -3px;
+}
+
+/* 8. Foco encantado: el campo crece y emite el glow morado de la casa —
+   el mismo lenguaje "aquí está pasando algo" del Repetir */
+.inputEstilos,
+.SelectEstilos {
+    border-radius: 4px;
+    transition: scale var(--t-rapido) var(--rebote), filter var(--t-rapido) ease;
+}
+
+.inputEstilos:focus,
+.SelectEstilos:focus {
+    outline: 2px solid #9C27B0;
+    filter: drop-shadow(0 0 6px rgba(156, 39, 176, 0.6));
+    scale: 1.05;
 }

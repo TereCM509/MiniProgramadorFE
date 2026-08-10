@@ -1,0 +1,49 @@
+<div class="pieza verde" id="piezaInicio">
+    <div class="cuadritos">
+        <div class="cuadritoInicioFin"></div>
+        <div class="cuadritoInicioFin"></div>
+    </div>
+    Inicio
+</div>
+
+<div class="pieza verde" id="piezaFin">
+    <div class="cuadritos">
+        <div class="cuadritoInicioFin"></div>
+        <div class="cuadritoInicioFin"></div>
+    </div>
+    Fin
+</div>
+
+<div class="pieza piezaTiempo" id="piezaTiempo">
+    <div class="cuadritos">
+        <div class="cuadritoTiempo"></div>
+        <div class="cuadritoTiempo"></div>
+    </div>
+    Tiempo ⏳
+    <input type="number" id="inputTiempo" placeholder="Segundos" class="inputEstilos" min="1" max="60" onkeydown="return false;">
+</div>
+
+<div class="pieza piezaRepetir" id="piezaRepetir">
+    <div class="repetir-top">
+        <div class="cuadritos">
+            <div class="cuadritoRepetir"></div>
+            <div class="cuadritoRepetir"></div>
+        </div>
+        Repetir 🔁
+        <input type="number" id="inputRepetir" placeholder="No.veces" class="inputEstilos" min="1" max="10" onkeydown="return false;">
+    </div>
+    <div class="repetir-body"></div>
+</div>
+
+<div class="pieza piezaLarga piezaAntorcha" id="piezaAntorcha">
+    <div class="cuadritos">
+        <div class="cuadritoAntorcha"></div>
+        <div class="cuadritoAntorcha"></div>
+    </div>
+    Encender antorchas 🔥
+    <select id="selectAntorcha" class="SelectEstilos">
+        <option value="" selected disabled>Selecciona</option>
+        <option value="derecha">derechas</option>
+        <option value="izquierda">izquierdas</option>
+    </select>
+</div>
