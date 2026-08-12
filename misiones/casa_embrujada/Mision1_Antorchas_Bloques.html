@@ -14,13 +14,16 @@
     Fin
 </div>
 
-<div class="pieza piezaTiempo" id="piezaTiempo">
+<div class="pieza piezaLarga piezaTiempo" id="piezaTiempo">
     <div class="cuadritos">
         <div class="cuadritoTiempo"></div>
         <div class="cuadritoTiempo"></div>
     </div>
     Tiempo ⏳
-    <input type="number" id="inputTiempo" placeholder="Segundos" class="inputEstilos" min="1" max="60" onkeydown="return false;">
+    <input type="number" id="inputTiempoSeg" placeholder="Seg" class="inputEstilos" min="1" max="60"
+        onkeydown="return false;">
+    <input type="number" id="inputTiempoMin" placeholder="Min" class="inputEstilos" min="1" max="60"
+        onkeydown="return false;">
 </div>
 
 <div class="pieza piezaRepetir" id="piezaRepetir">
@@ -30,7 +33,8 @@
             <div class="cuadritoRepetir"></div>
         </div>
         Repetir 🔁
-        <input type="number" id="inputRepetir" placeholder="No.veces" class="inputEstilos" min="1" max="10" onkeydown="return false;">
+        <input type="number" id="inputRepetir" placeholder="No.veces" class="inputEstilos" min="1" max="10"
+            onkeydown="return false;">
     </div>
     <div class="repetir-body"></div>
 </div>
